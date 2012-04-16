@@ -1046,6 +1046,15 @@ static NSOperationQueue *sharedQueue = nil;
 			[[self requestCookies] addObjectsFromArray:cookies];
 		}
 	}
+    
+    // Futurose: Offer cookies to delegate so that I can store them per session
+    SEL getCookies = @selector(getRequestCookiesForURL:);
+    if (delegate && [delegate respondsToSelector:getCookies]) {
+        NSArray *cookies = [delegate performSelector:getCookies withObject:[self url]];
+		if (cookies) {
+			[[self requestCookies] addObjectsFromArray:cookies];
+		}
+    }
 	
 	// Apply request cookies
 	NSArray *cookies;
@@ -2210,6 +2219,12 @@ static NSOperationQueue *sharedQueue = nil;
 	// Handle cookies
 	NSArray *newCookies = [NSHTTPCookie cookiesWithResponseHeaderFields:[self responseHeaders] forURL:[self url]];
 	[self setResponseCookies:newCookies];
+
+    // Futurose: Offer cookies to delegate so that I can store them per session
+    SEL setCookies = @selector(handleReceivedCookies:forURL:);
+    if (delegate && [delegate respondsToSelector:setCookies]) {
+        [delegate performSelector:setCookies withObject:newCookies withObject:[self url]];
+    }
 	
 	if ([self useCookiePersistence]) {
 		
