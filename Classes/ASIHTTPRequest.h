@@ -881,10 +881,6 @@ typedef void (^ASIDataBlock)(NSData *data);
 // Returns a date from a string in RFC1123 format
 + (NSDate *)dateFromRFC1123String:(NSString *)string;
 
-#pragma mark Futurose additions
-- (void)handleReceivedCookies:(NSArray*)cookies forURL:(NSString*)url;
-- (NSArray*)getRequestCookiesForURL:(NSString*)url;
-
 // Used for detecting multitasking support at runtime (for backgrounding requests)
 #if TARGET_OS_IPHONE
 + (BOOL)isMultitaskingSupported;

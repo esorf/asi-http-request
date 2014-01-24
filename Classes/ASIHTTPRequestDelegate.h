@@ -32,4 +32,8 @@
 - (void)authenticationNeededForRequest:(ASIHTTPRequest *)request;
 - (void)proxyAuthenticationNeededForRequest:(ASIHTTPRequest *)request;
 
+#pragma mark Futurose additions
+- (void)handleReceivedCookies:(NSArray*)cookies forURL:(NSString*)url;
+- (NSArray*)getRequestCookiesForURL:(NSString*)url;
+
 @end
