@@ -1221,8 +1221,10 @@ static NSOperationQueue *sharedQueue = nil;
             // see: http://iphonedevelopment.blogspot.com/2010/05/nsstream-tcp-and-ssl.html
             
             NSDictionary *sslProperties = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                      [NSNumber numberWithBool:YES], kCFStreamSSLAllowsExpiredCertificates,
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < 40000
+                                           [NSNumber numberWithBool:YES], kCFStreamSSLAllowsExpiredCertificates,
                                       [NSNumber numberWithBool:YES], kCFStreamSSLAllowsAnyRoot,
+#endif
                                       [NSNumber numberWithBool:NO],  kCFStreamSSLValidatesCertificateChain,
                                       kCFNull,kCFStreamSSLPeerName,
                                       nil];
@@ -3996,7 +3998,7 @@ static NSOperationQueue *sharedQueue = nil;
 		// Work around <rdar://problem/5530166>.  This dummy call to 
 		// CFNetworkCopyProxiesForURL initialise some state within CFNetwork 
 		// that is required by CFNetworkCopyProxiesForAutoConfigurationScript.
-		CFRelease(CFNetworkCopyProxiesForURL((CFURLRef)[self url], NULL));
+        CFRelease(CFNetworkCopyProxiesForURL((CFURLRef)[self url], (__bridge CFDictionaryRef)@{}));
 
 		// Obtain the list of proxies by running the autoconfiguration script
 		CFErrorRef err = NULL;

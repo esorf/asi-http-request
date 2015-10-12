@@ -229,6 +229,7 @@ static const NSUInteger kDomainSection = 1;
 	sharedDialog = nil;
 	[self performSelector:@selector(presentNextDialog) withObject:nil afterDelay:0];
 	[self release];
+    [super viewDidDisappear:animated];
 }
 
 - (void)dismiss
@@ -316,6 +317,7 @@ static const NSUInteger kDomainSection = 1;
 #endif
 
 	[[self presentingController] presentViewController:self animated:YES completion:nil];
+    CFRunLoopWakeUp(CFRunLoopGetCurrent()); // Avoid lengthy pause caused by bug somewhere http://stackoverflow.com/a/30787046/1207583
 }
 
 #pragma mark button callbacks
